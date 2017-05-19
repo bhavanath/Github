@@ -6,6 +6,7 @@ public class TestMain : MonoBehaviour {
 
 	public Transform[] CamPoints;
 	public float speed;
+	public float RotSpeed;
 	public Transform MainView;
 
 	private bool Frontclick = false;
@@ -14,6 +15,13 @@ public class TestMain : MonoBehaviour {
 	public Animator anim;
 	public GameObject fnt;
 	public GameObject body;
+
+
+	public float x;
+	public float y;
+	public float z;
+
+
 
 	void Start () 
 	{
@@ -32,14 +40,13 @@ public class TestMain : MonoBehaviour {
 				if (hit.transform.tag == "cube1") {
 					Frontclick = true;
 					MainView = CamPoints [0];
-					//body.GetComponent<Renderer> ().material.color.a = 0;
 					Debug.Log ("cube1");					
 				} else
 					Frontclick = false;
 				if (hit.transform.tag == "cube2") {
 					Bodyclick = true;
 					MainView = CamPoints [1];
-					Debug.Log ("cube2");					
+					Debug.Log ("cube2");		
 				} else
 					Bodyclick = false;	
 				if (hit.transform.tag == "cube3") {
@@ -60,6 +67,8 @@ public class TestMain : MonoBehaviour {
 
 		}
 		Animations ();
+		if(Input.GetMouseButton(0))
+			WorldSpaceMovement ();
 	}
 
 	void LateUpdate()
@@ -74,8 +83,13 @@ public class TestMain : MonoBehaviour {
 			anim.SetBool ("front", true);
 		else if (!Frontclick)
 			anim.SetBool ("front", false);
+	}
 
-					
+	void WorldSpaceMovement()
+	{
+		//transform.Rotate ((Input.GetAxis ("Mouse X") * RotSpeed * Time.deltaTime), (Input.GetAxis ("Mouse Y") * RotSpeed * Time.deltaTime),0, Space.World);
+		transform.RotateAround(fnt.transform.position,new Vector3(x,y,z),5*Time.deltaTime*RotSpeed);
+
 	}
 
 }
